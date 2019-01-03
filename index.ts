@@ -3,9 +3,9 @@ import * as t from 'io-ts';
 import * as _ from 'lodash';
 
 const schema = {
-	one: { source: 'test', type: t.string, default: undefined },
+	one: { source: 'test', type: t.string, default: t.undefined },
 	two: { source: 'test', type: t.number, default: 123 },
-	three: { source: 'test', type: t.boolean, default: undefined },
+	three: { source: 'test', type: t.boolean, default: t.undefined },
 };
 
 const fnSchema = {

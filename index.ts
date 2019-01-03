@@ -3,9 +3,9 @@ import * as t from 'io-ts';
 import * as _ from 'lodash';
 
 const schema = {
-	one: { source: 'test', type: t.string, default: t.undefined },
+	one: { source: 'test', type: t.string, default: undefined },
 	two: { source: 'test', type: t.number, default: 123 },
-	three: { source: 'test', type: t.boolean, default: t.undefined },
+	three: { source: 'test', type: t.boolean, default: undefined },
 };
 
 const fnSchema = {
@@ -36,22 +36,12 @@ const retrieveKey = <T extends SchemaKey>(
 
 function getSchema<T extends SchemaKey>(
 	key: T,
-):
-	| t.TypeOf<Schema[T]['type']>
-	| (Schema[T]['default'] extends t.Type<any, any, any>
-			? t.TypeOf<Schema[T]['default']>
-			: Schema[T]['default']) {
+): t.TypeOf<Schema[T]['type']> | Schema[T]['default'] {
 	const val = retrieveKey(key);
 	if (isRight(val)) {
 		return val.value;
 	} else {
-		return schema[key].default as Schema[T]['default'] extends t.Type<
-			any,
-			any,
-			any
-		>
-			? t.TypeOf<Schema[T]['default']>
-			: Schema[T]['default'];
+		return schema[key].default;
 	}
 }
 

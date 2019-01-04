@@ -22,7 +22,7 @@ const StringBoolean = new t.Type<boolean, string>(
 
 const schema = {
 	one: { source: 'test' },
-	two: { source: 'test', default: 123 },
+	two: { source: 'test' },
 	three: { source: 'test'},
 	five: { source: 'test'},
 };
@@ -46,7 +46,7 @@ type SchemaKey = keyof Schema;
 type FnSchema = typeof fnSchema;
 type FnSchemaKey = keyof FnSchema;
 type SchemaTypes = typeof schemaTypes;
-type SchemaTypesKeys = keyof SchemaTypes;
+type SchemaTypesKey = keyof SchemaTypes;
 
 type RealType<T> = T extends t.Type<any> ? t.TypeOf<T> : T;
 
@@ -88,11 +88,11 @@ function getFn<T extends FnSchemaKey>(key: T): ReturnType<FnSchema[T]> {
 	return fnSchema[key]() as ReturnType<FnSchema[T]>;
 }
 
-function get<T extends SchemaKey>(
+function get<T extends SchemaTypesKey>(
 	key: T,
 ): t.TypeOf<SchemaTypes[T]['type']> | RealType<SchemaTypes[T]['default']>;
 function get<T extends FnSchemaKey>(key: T): ReturnType<FnSchema[T]>;
-function get<T extends SchemaKey | FnSchemaKey>(key: T) {
+function get<T extends SchemaTypesKey>(key: T) {
 	if (schema.hasOwnProperty(key)) {
 		return getSchema(key as SchemaKey);
 	} else {
@@ -100,7 +100,7 @@ function get<T extends SchemaKey | FnSchemaKey>(key: T) {
 	}
 }
 
-function getMany<T extends SchemaTypesKeys>(
+function getMany<T extends SchemaTypesKey>(
 	keys: T[],
 ): {
 	[key in T]: t.TypeOf<SchemaTypes[key]['type']> | RealType<SchemaTypes[key]['default']>
